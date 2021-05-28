@@ -86,7 +86,7 @@ export class VmdAppointmentCardComponent extends LitElement {
                     specificCardConfig = {
                         disabledBG: true,
                         libelleDateAbsente: 'Inga vaccintider',
-                        libelleBouton: 'Kolla på mottagningssidan',
+                        libelleBouton: 'Kolla manuellt på 1177',
                         typeBouton: 'btn-info',
                         onclick: () => this.verifierRdv()
                     };
@@ -94,7 +94,7 @@ export class VmdAppointmentCardComponent extends LitElement {
                     specificCardConfig = {
                         disabledBG: false,
                         libelleDateAbsente: 'Okänt datum',
-                        libelleBouton: 'Boka en tid',
+                        libelleBouton: 'Boka på 1177',
                         typeBouton: 'btn-primary',
                         onclick: () => this.prendreRdv()
                     };
@@ -102,7 +102,7 @@ export class VmdAppointmentCardComponent extends LitElement {
 
                 cardConfig = {
                     highlighted: this.highlightable && !specificCardConfig.disabledBG,
-                    estCliquable: true,
+                    estCliquable: false,
                     disabledBG: specificCardConfig.disabledBG,
                     libelleDateAbsente: specificCardConfig.libelleDateAbsente,
                     cardLink: (content) =>
@@ -116,19 +116,14 @@ export class VmdAppointmentCardComponent extends LitElement {
                         <div class="col-auto text-description">
                           ${this.lieu.appointment_count.toLocaleString()} tid${Strings.plural(this.lieu.appointment_count, "er")}
                         </div>
-                        ${this.lieu.plateforme?html`
-                        |
-                        <div class="col-auto">
-                            ${plateforme?html`
-                            <img class="rdvPlatformLogo ${plateforme.styleCode}" src="${Router.basePath}assets/images/png/${plateforme.logo}" alt="Créneau de vaccination ${plateforme.nom}">
-                            `:html`
-                            ${this.lieu.plateforme}
-                            `}
-                        </div>
-                        `:html``}
                       </div>
                     `
                 };
+                if(typeLieu === 'inactif-via-plateforme') {
+                  cardConfig.actions = html``
+                  cardConfig.cardLink = (content) =>
+                        html`${content}`
+                }
             } else if(typeLieu === 'actif-via-tel') {
                 cardConfig = {
                     highlighted: false,
@@ -141,7 +136,7 @@ export class VmdAppointmentCardComponent extends LitElement {
                           </a>`,
                     actions: html`
                           <a href="${this.lieu.url}" class="btn btn-tel btn-lg">
-                            Kolla på mottagningssidan
+                            Kolla manuellt på 1177
                           </a>
                           <div class="row align-items-center justify-content-center mt-3 text-gray-700">
                             <div class="col-auto">
