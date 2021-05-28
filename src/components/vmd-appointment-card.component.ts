@@ -79,9 +79,6 @@ export class VmdAppointmentCardComponent extends LitElement {
                 actions: TemplateResult|undefined, libelleDateAbsente: string
             };
             let typeLieu = typeActionPour(this.lieu);
-            let scared_regions = ["12", "04", "10", "06", "08", "07", "04", "22", "14", "18"];
-            let is_from_the_seven_regions = scared_regions.includes(this.lieu.departement);
-            let isMittVaccin = (this.lieu.plateforme == "MittVaccin");
 
             if(typeLieu === 'actif-via-plateforme' || typeLieu === 'inactif-via-plateforme') {
                 let specificCardConfig: { disabledBG: boolean, libelleDateAbsente: string, libelleBouton: string, typeBouton: 'btn-info'|'btn-primary', onclick: ()=>void };
@@ -169,16 +166,6 @@ export class VmdAppointmentCardComponent extends LitElement {
             } else {
                 throw new Error(`Unsupported typeLieu : ${typeLieu}`)
             }
-            if (isMittVaccin || is_from_the_seven_regions) {
-              cardConfig = {
-                    highlighted: false,
-                    estCliquable: false,
-                    disabledBG: true,
-                    libelleDateAbsente: 'Inga vaccintider',
-                    cardLink: (content) => content,
-                    actions: undefined
-                };
-            }
 
             return cardConfig.cardLink(html`
             <div class="card rounded-3 mb-5  ${classMap({
@@ -243,9 +230,6 @@ export class VmdAppointmentCardComponent extends LitElement {
     }
 
     private cardTitle(cardConfig: any): string {
-      if (this.lieu.plateforme == "MittVaccin") {
-        return "Tillgängliga tider kan inte visas i enlighet med regionens begäran"
-      }
       if (this.lieu.prochain_rdv) {
         return this.toTitleCase(formatDate(parseISO(this.lieu.prochain_rdv), "EEEE d MMMM 'kl.'HH:mm", { locale: sv }))
       } else {
