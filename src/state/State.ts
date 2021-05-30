@@ -296,7 +296,7 @@ export class State {
 
         if (!departements.find(d => d.code_departement === DEPARTEMENT_OM.code_departement)) {
             // The OM departement is missing in back-end departements.json.
-            departements.push(DEPARTEMENT_OM);
+            //departements.push(DEPARTEMENT_OM);
         }
 
         return departements.sort((d1, d2) => convertDepartementForSort(d1.code_departement).localeCompare(convertDepartementForSort(d2.code_departement)))
